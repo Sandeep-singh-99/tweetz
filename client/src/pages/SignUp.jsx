@@ -1,10 +1,44 @@
 import React, { useState } from "react";
 import { User, Mail, Lock, Eye, EyeOff, Camera } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+
+const signUpUser = async (formData) => {
+  const response = await fetch("http://localhost:5000/api/auth/signup", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Signup failed");
+  }
+
+  return data;
+};
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+
+  const navigate = useNavigate();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: signUpUser,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Signup successful!");
+      navigate("/");
+    },
+  });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -12,9 +46,24 @@ export default function SignUp() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
+        setProfileImage(file);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("fullName", fullName);
+    formData.append("email", email);
+    formData.append("password", password);
+    if (profileImage) {
+      formData.append("image", profileImage);
+    }
+
+    mutate(formData);
   };
 
   return (
@@ -28,7 +77,7 @@ export default function SignUp() {
             Create your account
           </p>
         </div>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center mb-6">
             <div className="relative w-32 h-32">
               <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
@@ -68,6 +117,8 @@ export default function SignUp() {
                 type="text"
                 className="w-full focus:outline-none"
                 placeholder="John Doe"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
               />
             </div>
           </div>
@@ -80,6 +131,8 @@ export default function SignUp() {
                 type="email"
                 className="w-full focus:outline-none"
                 placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
@@ -92,6 +145,8 @@ export default function SignUp() {
                 type={showPassword ? "text" : "password"}
                 className="w-full focus:outline-none"
                 placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"
@@ -117,7 +172,7 @@ export default function SignUp() {
       </div>
 
       <div className="absolute bottom-4 text-gray-500 text-sm">
-        <p>  
+        <p>
           Already have an account?
           <Link to={"/login"} className="text-blue-600 hover:underline">
             Log in
