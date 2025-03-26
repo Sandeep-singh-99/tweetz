@@ -67,6 +67,12 @@ export default function SideBar() {
       
       <div className="p-4">
         {
+          loading ? (
+            <div className='flex items-center space-x-4'>
+              <div className="w-12 h-12 skeleton rounded-full animate-pulse"></div>
+              <div className="w-24 h-6 skeleton rounded-full mt-2 animate-pulse"></div>
+            </div>
+          ) :
           isAuthenticated ? (
             <div className="flex items-center space-x-4 hover:bg-gray-800 rounded-full transition-colors p-2">
               <img src={user.data.profileImage} alt="Profile" className="w-12 h-12 rounded-full" />
@@ -79,10 +85,6 @@ export default function SideBar() {
           </Link>
           )
         }
-        {/* <Link to={"/login"} className="w-full flex items-center justify-center lg:justify-start px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
-          <LogIn className="w-6 h-6 lg:mr-2" />
-          <span className="hidden lg:inline text-lg">Login</span>
-        </Link> */}
       </div>
     </div>
   );
