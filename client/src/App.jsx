@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
@@ -6,8 +6,17 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SideBar from "./components/SideBar";
 import Profile from "./pages/Profile";
+import { useDispatch } from "react-redux";
+import { isCheckAuth } from "./redux/slice/auth.slice";
 
 export default function App() {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(isCheckAuth())
+  },[dispatch])
+
   return (
     <BrowserRouter>
       <div className="flex min-h-screen">

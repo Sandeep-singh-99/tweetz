@@ -3,10 +3,13 @@ import { User, Mail, Lock, Eye, EyeOff, Camera } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { login } from "../redux/slice/auth.slice";
+import { useDispatch } from "react-redux";
 
 const signUpUser = async (formData) => {
   const response = await fetch("http://localhost:5000/api/auth/signup", {
     method: "POST",
+    credentials: "include",
     body: formData,
   });
 
@@ -29,6 +32,8 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const { mutate, isPending } = useMutation({
     mutationFn: signUpUser,
     onError: (error) => {
@@ -36,6 +41,7 @@ export default function SignUp() {
     },
     onSuccess: (data) => {
       toast.success(data.message || "Signup successful!");
+      dispatch(login(data));
       navigate("/");
     },
   });

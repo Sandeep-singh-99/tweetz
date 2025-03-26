@@ -35,7 +35,8 @@ export const register = async (req, res) => {
 
        if (newUser) {
         generateToken(newUser._id, res)
-        res.status(201).json({ _id: newUser._id, fullName: newUser.fullName, email: newUser.email ,message: "User registered successfully" });
+        res.status(201).json({ data: newUser, message: "User registered successfully" });
+        // res.status(201).json({ _id: newUser._id, fullName: newUser.fullName, email: newUser.email ,message: "User registered successfully" });
        } else {
         res.status(400).json({ error: "Invalid user data" });
        }
@@ -48,6 +49,10 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        console.log("email", email)
+        console.log("password", password);
+        
 
         if (!email || !password) {
             return res.status(400).json({ error: "Please fill in all fields" });
@@ -64,7 +69,7 @@ export const login = async (req, res) => {
         }
 
         generateToken(user._id, res)
-        res.status(200).json({ _id: user._id, fullName: user.fullName, email: user.email, message: "User logged in successfully" });
+        res.status(200).json({ data: user, message: "User logged in successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -82,7 +87,7 @@ export const logout = async (req, res) => {
 
 export const checkAuth = async (req, res) => {
     try {
-        res.status(200).json(req.user);
+        res.status(200).json({ data: req.user });
     } catch (error) {
         res.status(500).json({ error: error.message  });
     }
@@ -111,7 +116,7 @@ export const updateProfile = async (req, res) => {
             imageKitFileId: uploadResponse.fileId
         })
 
-        res.status(200).json({ updatedProfilePic, message: "Profile updated successfully" });
+        res.status(200).json({ data: updatedProfilePic, message: "Profile updated successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message});
     }
