@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slice/auth.slice";
@@ -31,17 +31,17 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onError: (error) => {
       toast.error(error.message); 
-      console.log(error.message);
     },
     onSuccess: (data) => {
       toast.success(data.message || "Login successful!");
       dispatch(login(data));
-      console.log(data);
+      navigate("/");
     },
   });
 

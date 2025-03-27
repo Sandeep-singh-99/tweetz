@@ -18,6 +18,23 @@ export const isCheckAuth = createAsyncThunk("auth/checkAuth", async (_, thunkApi
     }
 })
 
+export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
+    try {
+        const response = await fetch("http://localhost:5000/api/auth/logout", {
+            method: 'POST'
+        })
+        const data = await response.json();
+
+        if (!response.ok) {
+            return thunkApi.rejectWithValue(data.error);
+        }
+
+        return data;
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.message);
+    }
+})
+
 const authSlice = new createSlice({
     name: 'auth',
     initialState: {
@@ -45,6 +62,23 @@ const authSlice = new createSlice({
             state.isAuthenticated = false;
             state.user = null;
         })
+
+        builder.addCase(logout.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+
+        })
+
+        builder.addCase(logout.fulfilled, (state) => {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.user = null;
+        })
+
+        builder.addCase(logout.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
     },
 
     reducers: {
@@ -58,11 +92,6 @@ const authSlice = new createSlice({
         //     state.user = action.payload;
         // },
 
-        logout: (state) => {
-            state.isAuthenticated = false;
-            state.user = null;
-        },
-
         setLoading: (state, action) => {
             state.loading = action.payload;
         },
@@ -73,6 +102,6 @@ const authSlice = new createSlice({
     }
 })
 
-export const { login, logout, setLoading, setError } = authSlice.actions;
+export const { login, setLoading, setError } = authSlice.actions;
 
 export default authSlice.reducer;
