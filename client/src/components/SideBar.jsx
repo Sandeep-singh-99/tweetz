@@ -118,7 +118,7 @@ export default function SideBar() {
               <img
                 src={user.data.profileImage}
                 alt="Profile"
-                className="w-12 h-12 rounded-full border-2 border-blue-600"
+                className="w-12 h-12 rounded-full border-2 object-cover border-blue-600"
               />
               <p className="text-xl hidden md:block">{user.data.fullName}</p>
             </div>
