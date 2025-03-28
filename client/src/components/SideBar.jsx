@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Home,
   Hash,
@@ -9,14 +9,17 @@ import {
   LogIn,
   MoreHorizontal,
   LogOutIcon,
+  SquarePen,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slice/auth.slice";
 import { toast } from "react-hot-toast";
+import PostModalComponents from "./PostModalComponents";
 
 export default function SideBar() {
   const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -94,13 +97,20 @@ export default function SideBar() {
 
           <Link
             to={""}
-            className="flex items-center px-4 py-2 text-white hover:bg-[#181818] rounded-full transition-colors lg:w-11/12"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center justify-center bg-white px-4 py-2 text-black rounded-full transition-colors lg:w-11/12"
           >
-            <MoreHorizontal className="w-6 h-6" />
-            <span className="hidden lg:inline ml-4 text-lg">More</span>
+            <SquarePen/>
+            <span className="hidden lg:inline ml-4 font-semibold text-2xl">Post</span>
           </Link>
         </nav>
       </div>
+
+      {/* Modal */}
+      <PostModalComponents
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)} 
+      />
 
       <div className="p-4">
         {loading ? (
