@@ -1,4 +1,5 @@
 // PostModal.jsx
+import { ImageMinus } from "lucide-react";
 import React from "react";
 
 // Icons (you can use a library like react-icons for these)
@@ -123,7 +124,7 @@ export default function PostModalComponents({ isOpen, onClose, userInitial = "S"
                 onChange={handleMediaChange}
                 aria-label="Upload media"
               />
-              <MediaIcon />
+              <ImageMinus/>
             </label>
             <button className="text-blue-500" disabled>
               <GifIcon />
