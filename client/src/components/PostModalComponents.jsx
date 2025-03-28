@@ -1,10 +1,9 @@
 // PostModal.jsx
 import { ImageMinus } from "lucide-react";
+import { HiGif } from "react-icons/hi2";
 import React from "react";
 
 // Icons (you can use a library like react-icons for these)
-const MediaIcon = () => <span>🖼️</span>;
-const GifIcon = () => <span>🎞️</span>;
 const PollIcon = () => <span>📊</span>;
 const EmojiIcon = () => <span>😊</span>;
 const LocationIcon = () => <span>📍</span>;
@@ -56,7 +55,7 @@ export default function PostModalComponents({ isOpen, onClose, userInitial = "S"
       onClick={handleOverlayClick}
       aria-labelledby="post_modal_title"
     >
-      <div className="modal-box bg-gray-900 text-white w-full max-w-lg rounded-lg">
+      <div className="modal-box shadow-2xl shadow-white/10 text-white w-full max-w-lg rounded-lg">
         {/* Header with close button */}
         <div className="flex justify-between items-center">
           <button onClick={onClose} className="text-white text-xl">
@@ -127,7 +126,7 @@ export default function PostModalComponents({ isOpen, onClose, userInitial = "S"
               <ImageMinus/>
             </label>
             <button className="text-blue-500" disabled>
-              <GifIcon />
+            <HiGif size={25} />
             </button>
             <button className="text-blue-500" disabled>
               <PollIcon />
