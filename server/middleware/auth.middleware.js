@@ -4,7 +4,7 @@ import User from '../model/user.model.js';
 
 export const authMiddleware = async (req, res, next) => {
     try {
-        const token = req.cookies.token        
+        const token = req.cookies.ChatApp       
 
         if(!token) {
             return res.status(401).json({ message: "Unauthorized" });
