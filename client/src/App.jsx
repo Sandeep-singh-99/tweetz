@@ -10,42 +10,35 @@ import { useDispatch } from "react-redux";
 import { isCheckAuth } from "./redux/slice/auth.slice";
 
 export default function App() {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(isCheckAuth())
-  },[dispatch])
+    dispatch(isCheckAuth());
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen">
-        {/* Sidebar */}
+      <div className="flex min-h-screen bg-black text-white">
         <SideBar />
-
-        {/* Main Content Area */}
         <main className="flex-1 ml-20 lg:ml-64 transition-all duration-300">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto px-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/profile" element={<Profile />} />
-              {/* 404 Route */}
               <Route
                 path="*"
                 element={
-                  <div className="flex items-center justify-center h-screen bg-gray-100">
-                    <div className="text-center p-8 bg-white rounded-xl shadow-md border border-gray-200">
-                      <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                        404
-                      </h1>
-                      <p className="text-gray-600">Page Not Found</p>
+                  <div className="flex items-center justify-center min-h-screen">
+                    <div className="text-center p-8 bg-gray-900 rounded-xl shadow-lg border border-gray-800">
+                      <h1 className="text-5xl font-bold text-white mb-2">404</h1>
+                      <p className="text-gray-400 mb-6">Page Not Found</p>
                       <a
                         href="/"
-                        className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors"
+                        className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
                       >
-                        Go Home
+                        Back to Home
                       </a>
                     </div>
                   </div>
@@ -56,30 +49,33 @@ export default function App() {
         </main>
       </div>
 
-
       <Toaster
         position="top-right"
-        containerStyle={{
-          top: 20,
-          right: 20,
-        }}
+        containerStyle={{ top: 20, right: 20 }}
         toastOptions={{
           duration: 4000,
           style: {
-            background: "#1f2937", 
+            background: "#1f2937",
             color: "#ffffff",
-            borderRadius: "8px",
-            padding: "12px 20px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+            padding: "16px 24px",
+            boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
           },
           success: {
             style: {
-              background: "#15803d", 
+              background: "#15803d",
+              border: "1px solid rgba(22, 163, 74, 0.3)",
+            },
+            iconTheme: {
+              primary: "#ffffff",
+              secondary: "#15803d",
             },
           },
           error: {
             style: {
-              background: "#b91c1c", 
+              background: "#b91c1c",
+              border: "1px solid rgba(185, 28, 28, 0.3)",
             },
           },
         }}
@@ -87,3 +83,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
+
